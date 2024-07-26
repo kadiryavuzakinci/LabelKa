@@ -185,7 +185,7 @@
 # if __name__ == "__main__":
 #     main()
 
-
+#-------------------------------------LAST---------------------------------
 import os
 import glob
 import cv2
@@ -264,16 +264,18 @@ def update_counter():
         show_save_message = True
 
 def revert_counter():
-    global counter
+    global counter, show_save_message
     counter += 1
     if counter > 17:
         counter = 0
+    if counter == 17:
+        show_save_message = False
 
 def save_bounding_boxes(image_file, bounding_boxes, keypoints, img_width, img_height):
     txt_file_name = os.path.splitext(os.path.basename(image_file))[0] + '.txt'
     txt_file_path = os.path.join(output_folder, txt_file_name)
 
-    with open(txt_file_path, 'w') as f:
+    with open(txt_file_path, 'a') as f:  # Open in append mode
         for box, kps in zip(bounding_boxes, keypoints):
             x1, y1 = box[0]
             x2, y2 = box[1]
@@ -393,7 +395,9 @@ def display_images(image_files):
             elif key == ord('r'):
                 if keypoints and keypoints[-1]:
                     keypoints[-1].pop()
-                    update_counter()
+                    if not keypoints[-1]:
+                        show_save_message = False  # Hide save message if no keypoints left
+                    revert_counter()
                 elif bounding_boxes:
                     bounding_boxes.pop()
                     keypoints.pop()
@@ -401,6 +405,7 @@ def display_images(image_files):
                     drawing_keypoints = False
                     drawing_box = False
                     start_point = None
+                    show_save_message = False  # Hide save message if bounding box removed
                     revert_counter()
         else:
             print(f"Failed to load image: {image_file}")
@@ -415,3 +420,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#------------------------------------------------------------***********************-----------------------------------------
