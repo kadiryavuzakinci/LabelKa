@@ -6,7 +6,7 @@ This labeling program is designed for pose estimation using OpenCV. It processes
 
 # Screenshot
 
-<img src="LabelKa.png" alt="alt text" width="700" height="500">
+<img src="LabelKa.png" alt="alt text" width="500" height="500">
 
 ## Features
 
